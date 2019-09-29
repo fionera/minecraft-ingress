@@ -1,0 +1,21 @@
+﻿stages:
+- name: Build
+  steps:
+  - publishImageConfig:
+      dockerfilePath: ./Dockerfile
+      buildContext: .
+      tag: fionera/minecraft-ingress:latest
+- name: Build Tag
+  steps:
+  - publishImageConfig:
+      dockerfilePath: ./Dockerfile
+      buildContext: .
+      tag: fionera/minecraft-ingress:${CICD_GIT_TAG}
+      pushRemote: true
+      registry: index.docker.io
+  when:
+    event:
+      include:
+      - tag
+timeout: 60
+notification: {}
