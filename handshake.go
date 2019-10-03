@@ -34,6 +34,8 @@ func HandleHandshake(con net.Conn, data []byte, packet []byte) {
 	// Port
 	//port := binary.BigEndian.Uint16(data[i:i + 2])
 	i += 2
+	
+	logrus.Printf("New connection from address: `%s`", address)
 
 	server := viper.GetStringMapString("server")
 
