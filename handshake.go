@@ -34,8 +34,13 @@ func HandleHandshake(con net.Conn, data []byte, packet []byte) {
 	// Port
 	//port := binary.BigEndian.Uint16(data[i:i + 2])
 	i += 2
-	
-	logrus.Printf("New connection from address: `%s`", address)
+
+	if s := strings.Split(address, "\000"); len(s) > 1 {
+		address = s[0]
+		logrus.Printf("New forge connection from address: `%s`", address)
+	} else {
+		logrus.Printf("New forge connection from address: `%s`", address)
+	}
 
 	server := viper.GetStringMapString("server")
 
@@ -66,6 +71,5 @@ func HandleHandshake(con net.Conn, data []byte, packet []byte) {
 		go io.Copy(backendConnection, con)
 		io.Copy(con, backendConnection)
 	}
-
 
 }
